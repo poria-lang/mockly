@@ -2,8 +2,8 @@
 
 **Zero-configuration mock data generator and REST API server**
 
-[![CI Pipeline](https:///actions/workflows/ci.yml/badge.svg)](https:///actions/workflows/ci.yml)
-[![Go Report Card](https://goreportcard.com/badge/)](https://goreportcard.com/report/)
+[![CI Pipeline](https://github.com/poria-lang/mockly/actions/workflows/ci.yml/badge.svg)](https://github.com/poria-lang/mockly/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/poria-lang/mockly)](https://goreportcard.com/report/github.com/poria-lang/mockly)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Go Version](https://img.shields.io/badge/Go-1.26+-blue.svg)](https://go.dev/)
 
@@ -50,7 +50,7 @@ curl http://localhost:3000/api/users
 
 ```bash
 # Clone the repository
-git clone https://.git
+git clone https://github.com/poria-lang/mockly.git
 cd mockly
 
 # Build the binary
@@ -274,7 +274,7 @@ We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) 
 
 ```bash
 # Clone and build
-git clone https://.git
+git clone https://github.com/poria-lang/mockly.git
 cd mockly
 go build -o mockly.exe ./cmd/mockly
 
