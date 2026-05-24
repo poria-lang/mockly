@@ -1,0 +1,33 @@
+{
+  "seed_count": 50,
+  "schema": {
+    "users": {
+      "id": {
+        "type": "uuid"
+      },
+      "name": {
+        "type": "name"
+      },
+      "email": {
+        "type": "email"
+      },
+      "created_at": {
+        "type": "timestamp"
+      }
+    },
+    "products": {
+      "id": {
+        "type": "uuid"
+      },
+      "name": {
+        "type": "text"
+      },
+      "price": {
+        "type": "float"
+      },
+      "in_stock": {
+        "type": "boolean"
+      }
+    }
+  }
+}

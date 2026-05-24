@@ -1,0 +1,31 @@
+name: 🐛 Bug Report
+description: Report a bug to help us improve Mockly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting this issue! Please provide sufficient context to make reproduction straightforward.
+  - type: textarea
+    id: clear-description
+    attributes:
+      label: Description of the Bug
+      placeholder: What goes wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: mockly-config
+    attributes:
+      label: Your mockly.json Config File
+      placeholder: Paste the exact file contents used when the error occurred.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: CLI-output
+    attributes:
+      label: Terminal Log Output
+      placeholder: Paste your terminal run output logs here.
+      render: bash
+    validations:
+      required: true
