@@ -203,7 +203,7 @@ func TestGetAllRowsPaged(t *testing.T) {
 		t.Fatalf("failed to get all rows: %v", err)
 	}
 	if rows == nil {
-		rows = []map[string]interface{}{}
+		t.Log("got nil rows for empty table")
 	}
 }
 

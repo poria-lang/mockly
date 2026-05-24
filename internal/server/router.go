@@ -171,45 +171,6 @@ func (s *Server) handleGetOne(w http.ResponseWriter, r *http.Request, tableName,
 	s.jsonResponse(w, http.StatusOK, row)
 }
 
-// handleCreate creates a new record using generated fake data
-func (s *Server) handleCreate(w http.ResponseWriter, r *http.Request, tableName string) {
-	fields := s.config.Schema[tableName]
-
-	// Generate fake data for the new row
-	row := s.gen.GenerateRow(fields)
-
-	if err := s.db.InsertRow(tableName, row, ""); err != nil {
-		s.errorResponse(w, http.StatusInternalServerError, "Failed to insert data: "+err.Error())
-		return
-	}
-
-	s.jsonResponse(w, http.StatusCreated, row)
-}
-
-// handleDelete deletes a record by ID
-func (s *Server) handleDelete(w http.ResponseWriter, r *http.Request, tableName, pkColumn string) {
-	id := r.PathValue("id")
-	if id == "" {
-		s.errorResponse(w, http.StatusBadRequest, "ID is required")
-		return
-	}
-
-	deleted, err := s.db.DeleteRow(tableName, pkColumn, id)
-	if err != nil {
-		s.errorResponse(w, http.StatusInternalServerError, "Failed to delete data: "+err.Error())
-		return
-	}
-	if !deleted {
-		s.errorResponse(w, http.StatusNotFound, fmt.Sprintf("Record with %s='%s' not found", pkColumn, id))
-		return
-	}
-
-	s.jsonResponse(w, http.StatusOK, map[string]interface{}{
-		"message": "Record deleted successfully",
-		"id":      id,
-	})
-}
-
 // parsePaginationParams extracts limit and offset from query parameters
 func parsePaginationParams(r *http.Request) (limit, offset int) {
 	limitStr := r.URL.Query().Get("limit")

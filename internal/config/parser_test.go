@@ -190,10 +190,19 @@ func TestSupportedTypes(t *testing.T) {
 func TestFindConfigFile_NotFound(t *testing.T) {
 	// Use a temporary directory with no config files
 	tmpDir := t.TempDir()
-	originalWd, _ := os.Getwd()
-	defer os.Chdir(originalWd)
+	originalWd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("failed to get working directory: %v", err)
+	}
+	defer func() {
+		if err := os.Chdir(originalWd); err != nil {
+			t.Errorf("failed to restore working directory: %v", err)
+		}
+	}()
 
-	os.Chdir(tmpDir)
+	if err := os.Chdir(tmpDir); err != nil {
+		t.Fatalf("failed to change directory: %v", err)
+	}
 
 	_, err := FindConfigFile()
 	if err == nil {

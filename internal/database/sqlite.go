@@ -6,6 +6,7 @@ import (
 	"log"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 
 	_ "modernc.org/sqlite"
@@ -476,9 +477,17 @@ func GetPrimaryKeyColumn(fields config.Schema) string {
 			return fieldName
 		}
 	}
-	// Fallback to first field if no uuid found
-	for fieldName := range fields {
-		return fieldName
+
+	// Fallback to first field in alphabetical order if no uuid found (deterministic)
+	if len(fields) == 0 {
+		return ""
 	}
-	return ""
+
+	keys := make([]string, 0, len(fields))
+	for k := range fields {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	return keys[0]
 }
