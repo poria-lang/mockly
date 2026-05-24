@@ -43,14 +43,14 @@ func TestCreateTables(t *testing.T) {
 
 	schema := map[string]config.Schema{
 		"users": {
-			"id":    {Type: "uuid"},
-			"name":  {Type: "name"},
-			"email": {Type: "email"},
+			"id":    config.FieldSchema{Type: "uuid"},
+			"name":  config.FieldSchema{Type: "name"},
+			"email": config.FieldSchema{Type: "email"},
 		},
 		"products": {
-			"id":    {Type: "uuid"},
-			"name":  {Type: "text"},
-			"price": {Type: "float"},
+			"id":    config.FieldSchema{Type: "uuid"},
+			"name":  config.FieldSchema{Type: "text"},
+			"price": config.FieldSchema{Type: "float"},
 		},
 	}
 
@@ -79,7 +79,7 @@ func TestCreateTables_InvalidTableName(t *testing.T) {
 	// (validation happens at config level)
 	schema := map[string]config.Schema{
 		"valid_table": {
-			"id": {Type: "uuid"},
+			"id": config.FieldSchema{Type: "uuid"},
 		},
 	}
 
@@ -95,8 +95,8 @@ func TestCountRows(t *testing.T) {
 
 	schema := map[string]config.Schema{
 		"users": {
-			"id":   {Type: "uuid"},
-			"name": {Type: "name"},
+			"id":   config.FieldSchema{Type: "uuid"},
+			"name": config.FieldSchema{Type: "name"},
 		},
 	}
 
@@ -119,7 +119,7 @@ func TestTableExists(t *testing.T) {
 
 	schema := map[string]config.Schema{
 		"users": {
-			"id": {Type: "uuid"},
+			"id": config.FieldSchema{Type: "uuid"},
 		},
 	}
 
@@ -150,8 +150,8 @@ func TestClearTable(t *testing.T) {
 
 	schema := map[string]config.Schema{
 		"users": {
-			"id":   {Type: "uuid"},
-			"name": {Type: "name"},
+			"id":   config.FieldSchema{Type: "uuid"},
+			"name": config.FieldSchema{Type: "name"},
 		},
 	}
 
@@ -179,8 +179,8 @@ func TestGetAllRowsPaged(t *testing.T) {
 
 	schema := map[string]config.Schema{
 		"users": {
-			"id":   {Type: "uuid"},
-			"name": {Type: "name"},
+			"id":   config.FieldSchema{Type: "uuid"},
+			"name": config.FieldSchema{Type: "name"},
 		},
 	}
 
@@ -216,16 +216,16 @@ func TestGetPrimaryKeyColumn(t *testing.T) {
 		{
 			name: "uuid field",
 			fields: config.Schema{
-				"id":   {Type: "uuid"},
-				"name": {Type: "name"},
+				"id":   config.FieldSchema{Type: "uuid"},
+				"name": config.FieldSchema{Type: "name"},
 			},
 			expected: "id",
 		},
 		{
 			name: "no uuid field",
 			fields: config.Schema{
-				"name":  {Type: "name"},
-				"email": {Type: "email"},
+				"name":  config.FieldSchema{Type: "name"},
+				"email": config.FieldSchema{Type: "email"},
 			},
 			expected: "name",
 		},
@@ -271,9 +271,9 @@ func TestMapFieldTypeToSQL(t *testing.T) {
 
 func TestBuildCreateTableQuery(t *testing.T) {
 	fields := config.Schema{
-		"id":    {Type: "uuid"},
-		"name":  {Type: "name"},
-		"email": {Type: "email"},
+		"id":    config.FieldSchema{Type: "uuid"},
+		"name":  config.FieldSchema{Type: "name"},
+		"email": config.FieldSchema{Type: "email"},
 	}
 
 	query := buildCreateTableQuery("users", fields)
@@ -297,8 +297,8 @@ func TestBuildCreateTableQuery(t *testing.T) {
 
 func TestBuildCreateTableQuery_NoUUID(t *testing.T) {
 	fields := config.Schema{
-		"name":  {Type: "name"},
-		"email": {Type: "email"},
+		"name":  config.FieldSchema{Type: "name"},
+		"email": config.FieldSchema{Type: "email"},
 	}
 
 	query := buildCreateTableQuery("contacts", fields)
