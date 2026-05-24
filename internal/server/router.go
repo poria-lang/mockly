@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/poria-lang/mockly/internal/config"
@@ -207,16 +206,4 @@ func (s *Server) errorResponse(w http.ResponseWriter, statusCode int, message st
 		"error":   http.StatusText(statusCode),
 		"message": message,
 	})
-}
-
-// extractTableAndID parses the URL path to extract table name and optional ID
-func extractTableAndID(path string) (tableName string, id string) {
-	parts := strings.Split(strings.TrimPrefix(path, "/api/"), "/")
-	if len(parts) > 0 {
-		tableName = parts[0]
-	}
-	if len(parts) > 1 {
-		id = parts[1]
-	}
-	return
 }
