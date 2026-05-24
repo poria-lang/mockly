@@ -6,7 +6,7 @@ import (
 
 	"github.com/brianvoe/gofakeit/v7"
 
-	"github.com/voyyar/mockly/internal/config"
+	"github.com/poria-lang/mockly/internal/config"
 )
 
 // Generator handles generating fake data for database seeding

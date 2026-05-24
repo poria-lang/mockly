@@ -27,7 +27,7 @@ builds:
       - goos: windows
         goarch: arm64
     ldflags:
-      - -s -w -X github.com/voyyar/mockly/internal/version.Version={{ .Version }}
+      - -s -w -X github.com/poria-lang/mockly/internal/version.Version={{ .Version }}
 
 archives:
   - id: default

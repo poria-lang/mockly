@@ -1,4 +1,4 @@
-module github.com/voyyar/mockly
+module github.com/poria-lang/mockly
 
 go 1.26.3
 

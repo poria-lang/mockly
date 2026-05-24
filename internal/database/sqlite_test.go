@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/voyyar/mockly/internal/config"
+	"github.com/poria-lang/mockly/internal/config"
 )
 
 func setupTestDB(t *testing.T) *DB {

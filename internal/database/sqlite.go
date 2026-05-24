@@ -10,7 +10,7 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/voyyar/mockly/internal/config"
+	"github.com/poria-lang/mockly/internal/config"
 )
 
 // identifierRegex matches only allowed characters for table/column names

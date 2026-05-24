@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/voyyar/mockly/internal/config"
-	"github.com/voyyar/mockly/internal/database"
-	"github.com/voyyar/mockly/internal/faker"
+	"github.com/poria-lang/mockly/internal/config"
+	"github.com/poria-lang/mockly/internal/database"
+	"github.com/poria-lang/mockly/internal/faker"
 )
 
 // Server wraps the HTTP server and database connection

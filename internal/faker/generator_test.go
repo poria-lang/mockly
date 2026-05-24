@@ -3,7 +3,7 @@ package faker
 import (
 	"testing"
 
-	"github.com/voyyar/mockly/internal/config"
+	"github.com/poria-lang/mockly/internal/config"
 )
 
 func TestNew(t *testing.T) {
