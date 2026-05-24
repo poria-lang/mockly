@@ -47,10 +47,9 @@ jobs:
       - name: Download Dependencies
         run: go mod download
 
-      - name: Golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: latest
+      - name: Run golangci-lint from Source
+        run: |
+          go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run --timeout=5m
 
   unit-tests:
     name: Test Execution
