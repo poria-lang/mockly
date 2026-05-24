@@ -17,9 +17,9 @@ func TestGenerateRow(t *testing.T) {
 	g := New(42)
 
 	schema := config.Schema{
-		"id":    {Type: "uuid"},
-		"name":  {Type: "name"},
-		"email": {Type: "email"},
+		"id":    config.FieldSchema{Type: "uuid"},
+		"name":  config.FieldSchema{Type: "name"},
+		"email": config.FieldSchema{Type: "email"},
 	}
 
 	row := g.GenerateRow(schema)
@@ -61,8 +61,8 @@ func TestGenerateRows(t *testing.T) {
 	g := New(42)
 
 	schema := config.Schema{
-		"id":   {Type: "uuid"},
-		"name": {Type: "name"},
+		"id":   config.FieldSchema{Type: "uuid"},
+		"name": config.FieldSchema{Type: "name"},
 	}
 
 	rows := g.GenerateRows(schema, 10)
@@ -93,7 +93,7 @@ func TestGenerateRows_EmptySchema(t *testing.T) {
 func TestGenerateRows_ZeroCount(t *testing.T) {
 	g := New(42)
 	schema := config.Schema{
-		"id": {Type: "uuid"},
+		"id": config.FieldSchema{Type: "uuid"},
 	}
 
 	rows := g.GenerateRows(schema, 0)
