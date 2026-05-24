@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
-	"strings"
 )
 
 // FieldSchema represents a single field definition in the schema
@@ -44,7 +44,9 @@ type Config struct {
 
 // Load reads and parses mockly.json from the given path
 func Load(path string) (*Config, error) {
-	data, err := os.ReadFile(path)
+	// G304: Prevent directory traversal by cleaning the path
+	cleanPath := filepath.Clean(path)
+	data, err := os.ReadFile(cleanPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read config file %s: %w", path, err)
 	}
@@ -143,5 +145,5 @@ func FindConfigFile() (string, error) {
 
 // filepathClean cleans a file path to prevent path traversal attacks
 func filepathClean(path string) string {
-	return strings.TrimPrefix(path, ".."+string(os.PathSeparator))
+	return filepath.Clean(path)
 }

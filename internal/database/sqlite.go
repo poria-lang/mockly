@@ -121,7 +121,7 @@ func (db *DB) createIndexes(tableName string, fields config.Schema) error {
 func (db *DB) CountRows(tableName string) (int, error) {
 	var count int
 	sanitizedTable := sanitizeIdentifier(tableName)
-	query := fmt.Sprintf("SELECT COUNT(*) FROM %s", sanitizedTable)
+	query := fmt.Sprintf("SELECT COUNT(*) FROM %s", sanitizedTable) // #nosec G201 - table name is sanitized
 	err := db.conn.QueryRow(query).Scan(&count)
 	if err != nil {
 		return 0, fmt.Errorf("failed to count rows in '%s': %w", sanitizedTable, err)
@@ -202,11 +202,13 @@ func (db *DB) SeedTable(tableName string, fields config.Schema, rows []map[strin
 			sanitizedTable,
 			strings.Join(columns, ", "),
 			strings.Join(placeholders, ", "),
-		)
+		) // #nosec G201 - table and column names are sanitized
 
 		stmt, err := tx.Prepare(query)
 		if err != nil {
-			tx.Rollback()
+			if rollbackErr := tx.Rollback(); rollbackErr != nil {
+				log.Printf("warning: failed to rollback after prepare error: %v", rollbackErr)
+			}
 			return fmt.Errorf("failed to prepare insert statement: %w", err)
 		}
 
@@ -217,13 +219,19 @@ func (db *DB) SeedTable(tableName string, fields config.Schema, rows []map[strin
 				values = append(values, row[col])
 			}
 			if _, err := stmt.Exec(values...); err != nil {
-				tx.Rollback()
-				stmt.Close()
+				if rollbackErr := tx.Rollback(); rollbackErr != nil {
+					log.Printf("warning: failed to rollback after exec error: %v", rollbackErr)
+				}
+				if closeErr := stmt.Close(); closeErr != nil {
+					log.Printf("warning: failed to close statement: %v", closeErr)
+				}
 				return fmt.Errorf("failed to insert row: %w", err)
 			}
 		}
 
-		stmt.Close()
+		if closeErr := stmt.Close(); closeErr != nil {
+			log.Printf("warning: failed to close statement: %v", closeErr)
+		}
 
 		// Commit chunk to disk
 		if err := tx.Commit(); err != nil {
@@ -259,7 +267,7 @@ func (db *DB) InsertRow(tableName string, fields map[string]interface{}, idField
 		sanitizedTable,
 		strings.Join(columns, ", "),
 		strings.Join(placeholders, ", "),
-	)
+	) // #nosec G201 - table and column names are sanitized
 
 	_, err := db.conn.Exec(query, values...)
 	return err
@@ -274,7 +282,7 @@ func (db *DB) GetAllRows(tableName string) ([]map[string]interface{}, error) {
 // Use limit=0 and offset=0 to fetch all rows (unlimited)
 func (db *DB) GetAllRowsPaged(tableName string, limit, offset int) ([]map[string]interface{}, error) {
 	sanitizedTable := sanitizeIdentifier(tableName)
-	query := fmt.Sprintf("SELECT * FROM %s", sanitizedTable)
+	query := fmt.Sprintf("SELECT * FROM %s", sanitizedTable) // #nosec G201 - table name is sanitized
 	if limit > 0 {
 		query = fmt.Sprintf("%s LIMIT %d OFFSET %d", query, limit, offset)
 	}
@@ -327,7 +335,7 @@ func (db *DB) GetAllRowsPaged(tableName string, limit, offset int) ([]map[string
 func (db *DB) GetRow(tableName, idColumn, idValue string) (map[string]interface{}, error) {
 	sanitizedTable := sanitizeIdentifier(tableName)
 	sanitizedIDCol := sanitizeIdentifier(idColumn)
-	query := fmt.Sprintf("SELECT * FROM %s WHERE %s = ?", sanitizedTable, sanitizedIDCol)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE %s = ?", sanitizedTable, sanitizedIDCol) // #nosec G201 - table and column names are sanitized
 	row := db.conn.QueryRow(query, idValue)
 
 	columns, err := db.getColumnNames(sanitizedTable)
@@ -365,7 +373,7 @@ func (db *DB) GetRow(tableName, idColumn, idValue string) (map[string]interface{
 func (db *DB) DeleteRow(tableName, idColumn, idValue string) (bool, error) {
 	sanitizedTable := sanitizeIdentifier(tableName)
 	sanitizedIDCol := sanitizeIdentifier(idColumn)
-	query := fmt.Sprintf("DELETE FROM %s WHERE %s = ?", sanitizedTable, sanitizedIDCol)
+	query := fmt.Sprintf("DELETE FROM %s WHERE %s = ?", sanitizedTable, sanitizedIDCol) // #nosec G201 - table and column names are sanitized
 	result, err := db.conn.Exec(query, idValue)
 	if err != nil {
 		return false, fmt.Errorf("failed to delete row: %w", err)

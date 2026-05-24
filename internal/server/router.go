@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/voyyar/mockly/internal/config"
 	"github.com/voyyar/mockly/internal/database"
@@ -78,7 +79,7 @@ func (s *Server) registerTableRoutes(tableName, pkColumn string) {
 // Start begins listening on the configured port
 func (s *Server) Start() error {
 	addr := fmt.Sprintf(":%d", s.port)
-	log.Printf("�� Mockly API server running at http://localhost%s", addr)
+	log.Printf("🚀 Mockly API server running at http://localhost%s", addr)
 	log.Printf("📋 Endpoints:")
 	for tableName := range s.config.Schema {
 		log.Printf("   GET    /api/%s?limit=100&offset=0", tableName)
@@ -89,7 +90,14 @@ func (s *Server) Start() error {
 	log.Printf("   GET    /api/health")
 	log.Printf("Press Ctrl+C to stop the server")
 
-	return http.ListenAndServe(addr, s.mux)
+	server := &http.Server{
+		Addr:         addr,
+		Handler:      s.mux,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+	return server.ListenAndServe()
 }
 
 // handleHealth returns a simple health check response
@@ -227,7 +235,9 @@ func (s *Server) jsonResponse(w http.ResponseWriter, statusCode int, data interf
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(statusCode)
-	json.NewEncoder(w).Encode(data)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Printf("error encoding JSON response: %v", err)
+	}
 }
 
 // errorResponse writes an error JSON response
