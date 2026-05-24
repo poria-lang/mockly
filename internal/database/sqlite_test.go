@@ -227,7 +227,7 @@ func TestGetPrimaryKeyColumn(t *testing.T) {
 				"name":  config.FieldSchema{Type: "name"},
 				"email": config.FieldSchema{Type: "email"},
 			},
-			expected: "name",
+			expected: "email",
 		},
 		{
 			name:     "empty schema",

@@ -204,7 +204,7 @@ func TestFindConfigFile_NotFound(t *testing.T) {
 		t.Fatalf("failed to change directory: %v", err)
 	}
 
-	_, err := FindConfigFile()
+	_, err = FindConfigFile()
 	if err == nil {
 		t.Error("expected error when no config file exists, got nil")
 	}

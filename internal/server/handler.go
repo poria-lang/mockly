@@ -88,6 +88,41 @@ func (s *Server) HandlePost() http.HandlerFunc {
 	}
 }
 
+// handleDelete deletes a single record by primary key.
+func (s *Server) handleDelete(
+	w http.ResponseWriter,
+	r *http.Request,
+	tableName,
+	pkColumn string,
+) {
+	id := r.PathValue("id")
+	if id == "" {
+		s.errorResponse(w, http.StatusBadRequest, "ID is required")
+		return
+	}
+
+	// Delete the row from the database
+	_, err := s.db.DeleteRow(tableName, pkColumn, id)
+	if err != nil {
+		s.errorResponse(
+			w,
+			http.StatusInternalServerError,
+			"Failed to delete record: "+err.Error(),
+		)
+		return
+	}
+
+	s.jsonResponse(w, http.StatusOK, map[string]interface{}{
+		"status":  "success",
+		"message": fmt.Sprintf(
+			"Record with %s='%s' deleted from %s",
+			pkColumn,
+			id,
+			tableName,
+		),
+	})
+}
+
 // getDefaultValueForType returns a safe zero-value default for the given schema type.
 // This prevents SQL null errors when a client submits a partial JSON body.
 func getDefaultValueForType(t string) interface{} {
