@@ -21,7 +21,7 @@ Thank you for your interest in improving Mockly! To keep maintainer overhead sus
 * **Architecture Rules**:
   * Do not add heavy third-party routing dependencies; stick to native `net/http` route matching.
   * Keep all dynamic table logic protected by the strict sanitization patterns in `internal/config/validator.go`.
-  * **Avoid third-party tools and libraries** wherever possible. Mockly is designed for millisecond response times and zero latency — every external dependency adds overhead that threatens this goal. If you believe a third-party package is absolutely necessary, discuss it in an issue first.
+  * **Please Let's Try To Avoid third-party tools and libraries** wherever possible. Mockly is designed for millisecond response times and zero latency — every external dependency adds overhead that threatens this goal. If you believe a third-party package is absolutely necessary, discuss it in an issue first.
 * **Testing Requirement**: Every bug fix or new feature addition must be accompanied by corresponding test suites (`*_test.go`).
 
 ## 🚀 Creating a Pull Request
